@@ -14,7 +14,6 @@ export default function PaymentConfirmButton({
 
   useEffect(() => {
     const channel = subscribeToOrder(orderId, (payload) => {
-      console.log("Realtime fired!", payload);
       router.refresh();
     });
 

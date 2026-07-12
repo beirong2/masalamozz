@@ -19,7 +19,6 @@ export default async function PaymentPage({
   if (!order) {
     return (
       <>
-        <Navbar />
 
          <OrderPoller />
 
@@ -34,7 +33,6 @@ export default async function PaymentPage({
 
   return (
     <>
-      <Navbar />
 
        <OrderPoller />
 

@@ -5,6 +5,7 @@ import {
   useContext,
   useState,
   ReactNode,
+  useEffect,
 } from "react";
 
 import { CartItem } from "@/types/cart";
@@ -30,7 +31,29 @@ export function CartProvider({
 }: {
   children: ReactNode;
 }) {
-  const [cart, setCart] = useState<CartItem[]>([]);
+const [cart, setCart] = useState<CartItem[]>([]);
+const [loaded, setLoaded] = useState(false);
+
+useEffect(() => {
+  const saved = localStorage.getItem("cart");
+
+  if (saved) {
+    setCart(JSON.parse(saved));
+  }
+
+  setLoaded(true);
+}, []);
+
+useEffect(() => {
+  if (loaded) {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+}, [cart, loaded]);
+
+useEffect(() => {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}, [cart]);
+
 
   function addItem(item: CartItem) {
     setCart((prev) => [...prev, item]);

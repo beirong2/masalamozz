@@ -7,7 +7,6 @@ import SignatureItems from "@/components/menu/SignatureItems";
 export default function MenuPage() {
   return (
     <>
-      <Navbar />
 
       <main className="bg-[#F8F2E9] min-h-screen">
 

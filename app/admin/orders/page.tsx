@@ -49,16 +49,18 @@ export default async function AdminOrdersPage() {
     redirect("/");
   }
 
-  const { data: orders, error } = await supabase
-    .from("orders")
-    .select(`
-      *,
-      order_items (*)
-    `)
-    .order("created_at", {
-      ascending: false,
-    });
+const { data: orders, error } = await supabase
+  .from("orders")
+  .select(`
+    *,
+    order_items (*)
+  `)
+  .order("created_at", {
+    ascending: false,
+  });
 
+console.log("ADMIN ORDERS:", orders);
+console.log("ADMIN ERROR:", error);
 
   return (
     <main className="min-h-screen bg-[#F5F1E8] p-8">
@@ -149,8 +151,11 @@ export default async function AdminOrdersPage() {
 
 
                   <p className="text-sm text-stone-500">
-                    {new Date(order.created_at)
-                      .toLocaleString()}
+                    {new Date(order.created_at).toLocaleString("en-US", {
+                      timeZone: "America/Los_Angeles",
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })}
                   </p>
 
                 </div>

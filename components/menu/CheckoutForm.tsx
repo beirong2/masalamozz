@@ -14,13 +14,20 @@ type AddressSuggestion = {
 };
 
 export default function CheckoutForm() {
-  const { cart } = useCart();
+  const { cart, removeItem } = useCart();
+  console.log("CURRENT CART:", cart);
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [pickupTime, setPickupTime] = useState("ASAP");
   const [notes, setNotes] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"venmo" | "zelle">("venmo");
+
+  const [errors, setErrors] = useState<{
+  name?: string;
+  phone?: string;
+  address?: string;
+}>({});
 
   const [orderType, setOrderType] =
     useState<"pickup" | "delivery">("pickup");
@@ -153,10 +160,21 @@ function calculateDeliveryFee(miles: number) {
 
             <input
               value={name}
-              onChange={(e)=>setName(e.target.value)}
-              className="w-full rounded-xl border p-3"
+              onChange={(e) => {
+                setName(e.target.value);
+                setErrors((prev) => ({ ...prev, name: undefined }));
+              }}
+              className={`w-full rounded-xl border p-3 ${
+                errors.name ? "border-red-500" : ""
+              }`}
               placeholder="John Smith"
             />
+
+            {errors.name && (
+              <p className="mt-2 text-sm text-red-600">
+                {errors.name}
+              </p>
+            )}
           </div>
 
 
@@ -168,10 +186,21 @@ function calculateDeliveryFee(miles: number) {
 
             <input
               value={phone}
-              onChange={(e)=>setPhone(e.target.value)}
-              className="w-full rounded-xl border p-3"
+              onChange={(e) => {
+                setPhone(e.target.value);
+                setErrors((prev) => ({ ...prev, phone: undefined }));
+              }}
+              className={`w-full rounded-xl border p-3 ${
+                errors.phone ? "border-red-500" : ""
+              }`}
               placeholder="(555) 555-5555"
             />
+
+            {errors.phone && (
+              <p className="mt-2 text-sm text-red-600">
+                {errors.phone}
+              </p>
+            )}
           </div>
 
 
@@ -390,31 +419,32 @@ function calculateDeliveryFee(miles: number) {
           {cart.map((item)=>(
 
             <div
-              key={item.id}
-              className="flex justify-between"
-            >
+  key={item.id}
+  className="flex items-start justify-between"
+>
+  <div>
+    <p className="font-medium">
+      {item.signature ??
+        `${item.protein?.name} Bowl`}
+    </p>
 
-              <div>
+    <p className="text-sm text-stone-500">
+      Qty {item.quantity}
+    </p>
 
-                <p className="font-medium">
-                  {item.signature ??
-                    `${item.protein?.name} Bowl`}
-                </p>
+    <button
+      type="button"
+      onClick={() => removeItem(item.id)}
+      className="mt-1 text-sm font-medium text-red-600 hover:text-red-700"
+    >
+      Remove
+    </button>
+  </div>
 
-
-                <p className="text-sm text-stone-500">
-                  Qty {item.quantity}
-                </p>
-
-              </div>
-
-
-              <p>
-                ${(item.price * item.quantity).toFixed(2)}
-              </p>
-
-
-            </div>
+  <p className="font-medium">
+    ${(item.price * item.quantity).toFixed(2)}
+  </p>
+</div>
 
           ))}
 
@@ -463,15 +493,42 @@ function calculateDeliveryFee(miles: number) {
 
         <button
         type="button"
-        onClick={async () => {
+onClick={async () => {
 
-            if (!canCheckout) {
-            alert("Please select a valid delivery address.");
-            return;
-            }
+if (cart.length === 0) {
+  alert("Cart is empty");
+  return;
+}
 
+const newErrors: typeof errors = {};
 
-            const response = await fetch("/api/orders", {
+if (name.trim().length < 2) {
+  newErrors.name = "Please enter your name.";
+}
+
+if (phone.trim().length < 7) {
+  newErrors.phone = "Please enter a valid phone number.";
+}
+
+if (orderType === "delivery" && !deliveryAvailable) {
+  newErrors.address = "Please select a valid delivery address.";
+}
+
+setErrors(newErrors);
+
+if (Object.keys(newErrors).length > 0) {
+  return;
+}
+
+console.log("ORDER BODY:", {
+  name,
+  phone,
+  total,
+  cart,
+});
+
+const response = await fetch("/api/orders", {
+              
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -514,7 +571,15 @@ function calculateDeliveryFee(miles: number) {
             }
             else {
 
-            alert("Order failed");
+            if (data.details?.fieldErrors) {
+              setErrors({
+                name: data.details.fieldErrors.name?.[0],
+                phone: data.details.fieldErrors.phone?.[0],
+                address: data.details.fieldErrors.address?.[0],
+              });
+            } else {
+              alert("Something went wrong. Please try again.");
+            }
 
             console.error(data);
 

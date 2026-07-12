@@ -22,15 +22,27 @@ export const orderSchema = z.object({
   paymentMethod: z.string(),
 
   cart: z.array(
-    z.object({
-      quantity: z.number().int().positive(),
-      price: z.number().positive(),
-      signature: z.string().optional(),
-      protein: z
-        .object({
-          name: z.string(),
-        })
-        .optional(),
-    })
-  ),
+  z.object({
+    id: z.string().optional(),
+
+    quantity: z.number().int().positive(),
+
+    price: z.number().positive(),
+
+    signature: z.string().optional(),
+
+    protein: z
+      .object({
+        name: z.string(),
+      })
+      .nullable()
+      .optional(),
+
+    base: z.any().nullable().optional(),
+
+    sauce: z.any().nullable().optional(),
+
+    toppings: z.array(z.any()).optional(),
+  })
+),
 });

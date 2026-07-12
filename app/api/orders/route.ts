@@ -4,9 +4,11 @@ import { orderSchema } from "@/lib/validators";
 
 export async function POST(req: Request) {
 
-  try {
+  const body = await req.json();
 
-    const body = await req.json();
+console.log("API RECEIVED:", body);
+
+  try {
 const parsed = orderSchema.safeParse(body);
 
 if (!parsed.success) {
@@ -83,17 +85,15 @@ if (!parsed.success) {
     });
 
 
-  } catch(error){
-
+  } catch(error) {
   console.error("ORDER ERROR:", error);
 
   return NextResponse.json(
     {
-      error:"Order creation failed",
-      details:error
+      error: "Order creation failed",
+      details: error instanceof Error ? error.message : String(error),
     },
-    {status:500}
+    { status: 500 }
   );
-
 }
 }
