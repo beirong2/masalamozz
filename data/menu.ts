@@ -18,15 +18,15 @@ export const bases: MenuOption[] = [
     price: 0,
   },
   {
-    id: "half",
-    name: "Half Rice / Half Greens",
-    price: 0,
-  },
-  {
     id: "pasta",
     name: "Pasta",
     price: 1,
   },
+  {
+  id: "no-base",
+  name: "No Base",
+  price: 0,
+},
 ];
 
 export const proteins: MenuOption[] = [
@@ -45,6 +45,11 @@ export const proteins: MenuOption[] = [
     name: "Chana Masala",
     vegan: true,
     price: 2,
+  },
+  {
+    id: "no-protein",
+    name: "No Protein",
+    price: 0,
   },
 ];
 

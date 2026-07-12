@@ -10,20 +10,13 @@ export default function MenuPage() {
 
       <main className="bg-[#F8F2E9] min-h-screen">
 
-        <div className="mx-auto max-w-7xl px-6 py-16">
-
-          <MenuHero />
-
+        <div className="mx-auto max-w-7xl px-6 py-8">
+          
           <SignatureItems />
-
-          <div className="mt-20 grid gap-12 lg:grid-cols-[2fr_1fr]">
-
-            <BuildYourOwn />
-
-            <Cart />
-
-          </div>
-
+        <div className="mx-auto max-w-7xl px-6 py-3"></div>
+          <BuildYourOwn />
+        <div className="mx-auto max-w-7xl px-6 py-3"></div>
+          <Cart />
         </div>
 
       </main>

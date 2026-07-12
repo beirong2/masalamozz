@@ -70,11 +70,16 @@ function calculateDeliveryFee(miles: number) {
 
   const total = subtotal + deliveryFee;
 
-  const canCheckout =
-    orderType === "pickup" ||
-    (orderType === "delivery" && deliveryAvailable);
+  const canPlaceOrder =
+    cart.length > 0 &&
+    (
+      orderType === "pickup" ||
+      (orderType === "delivery" && deliveryAvailable)
+    );
 
     useEffect(() => {
+
+  
   const timer = setTimeout(() => {
 
     if (addressQuery.length >= 3) {

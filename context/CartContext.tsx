@@ -50,14 +50,47 @@ useEffect(() => {
   }
 }, [cart, loaded]);
 
-useEffect(() => {
-  localStorage.setItem("cart", JSON.stringify(cart));
-}, [cart]);
 
+function addItem(item: CartItem) {
+  setCart((prev) => {
+    const existingIndex = prev.findIndex((cartItem) => {
+      // Signature item comparison
+      if (cartItem.signature && item.signature) {
+        return cartItem.signature === item.signature;
+      }
 
-  function addItem(item: CartItem) {
-    setCart((prev) => [...prev, item]);
-  }
+      // Build your own bowl comparison
+      return (
+        !cartItem.signature &&
+        !item.signature &&
+        cartItem.bases.some(
+          (b) => b.name === item.bases[0]?.name
+        ) &&
+        cartItem.proteins.some(
+          (p) => p.name === item.proteins[0]?.name
+        ) &&
+        cartItem.baseMode === item.baseMode &&
+        cartItem.proteinMode === item.proteinMode &&
+        cartItem.sauce?.name === item.sauce?.name &&
+        JSON.stringify(cartItem.toppings) ===
+          JSON.stringify(item.toppings)
+      );
+    });
+
+    if (existingIndex !== -1) {
+      return prev.map((cartItem, index) =>
+        index === existingIndex
+          ? {
+              ...cartItem,
+              quantity: cartItem.quantity + item.quantity,
+            }
+          : cartItem
+      );
+    }
+
+    return [...prev, item];
+  });
+}
 
   function removeItem(id: string) {
     setCart((prev) => prev.filter((item) => item.id !== id));

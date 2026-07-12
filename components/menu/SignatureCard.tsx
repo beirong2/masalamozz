@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 
-interface SignatureCardProps {
+interface Props {
   name: string;
   description: string;
   price: number;
   image: string;
-  onAdd?: () => void;
+  onAdd: () => void;
+  onSelect: () => void;
 }
 
 export default function SignatureCard({
@@ -16,9 +17,10 @@ export default function SignatureCard({
   price,
   image,
   onAdd,
-}: SignatureCardProps) {
+  onSelect,
+}: Props) {
   return (
-    <div className="overflow-hidden rounded-3xl bg-white shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <div   onClick={onSelect}className="overflow-hidden rounded-3xl bg-white shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl">
       <div className="relative h-56 w-full bg-stone-100">
         <Image
           src={image}
@@ -42,12 +44,15 @@ export default function SignatureCard({
             ${price.toFixed(2)}
           </span>
 
-          <button
-            onClick={onAdd}
-            className="rounded-full bg-[#2E3416] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#475226]"
-          >
-            Add
-          </button>
+<button
+  className="rounded-full bg-[#2E3416] px-5 py-2 text-white font-semibold hover:bg-[#475226]"
+  onClick={(e) => {
+    e.stopPropagation();
+    onAdd();
+  }}
+>
+  Add
+</button>
         </div>
       </div>
     </div>

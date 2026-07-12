@@ -42,27 +42,38 @@ export default function Cart() {
 
               <div>
 
-              <h3 className="font-semibold text-lg text-[#2E3416]">
-                {item.signature ?? `${item.protein?.name} Bowl`}
-              </h3>
+<h3 className="font-semibold text-lg text-[#2E3416]">
+  {item.signature ?? "Custom Bowl"}
+</h3>
 
-              {!item.signature && (
-                <>
-                  <p className="text-sm text-stone-500">
-                    {item.base?.name}
-                  </p>
+{!item.signature && (
+  <>
+    <p className="text-sm text-stone-600">
+      <span className="font-medium">Base:</span>{" "}
+      {item.bases
+        .map((b) => b.name)
+        .join(item.bases.length === 2 ? " / " : "")}
+    </p>
 
-                  <p className="text-sm text-stone-500">
-                    {item.sauce?.name}
-                  </p>
+    <p className="text-sm text-stone-600">
+      <span className="font-medium">Protein:</span>{" "}
+      {item.proteins
+        .map((p) => p.name)
+        .join(item.proteins.length === 2 ? " / " : "")}
+    </p>
 
-                  {item.toppings.length > 0 && (
-                    <p className="mt-2 text-xs text-stone-400">
-                      {item.toppings.join(" • ")}
-                    </p>
-                  )}
-                </>
-              )}
+    <p className="text-sm text-stone-600">
+      <span className="font-medium">Sauce:</span>{" "}
+      {item.sauce?.name}
+    </p>
+
+    {item.toppings.length > 0 && (
+      <p className="mt-2 text-xs text-stone-400">
+        {item.toppings.join(" • ")}
+      </p>
+    )}
+  </>
+)}
 
             </div>
 

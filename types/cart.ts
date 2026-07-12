@@ -5,15 +5,14 @@ export interface CartItem {
 
   signature?: string;
 
-  base: MenuOption | null;
-
-  protein: MenuOption | null;
-
+bases: MenuOption[];
+proteins: MenuOption[];
   sauce: MenuOption | null;
 
+  baseMode?: "single" | "double" | "half";
+  proteinMode?: "single" | "double" | "half";
+
   toppings: string[];
-
   quantity: number;
-
   price: number;
 }
