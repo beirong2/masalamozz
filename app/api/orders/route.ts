@@ -50,9 +50,9 @@ if (!parsed.success) {
         subtotal,
         delivery_fee: deliveryFee,
         total,
-        status: "pending",
         payment_method: paymentMethod,
-        payment_status: "unpaid",
+  status: "received",
+payment_status: "unpaid",
     })
     .select("id")
     .single();
@@ -61,14 +61,18 @@ if (!parsed.success) {
     if (error) throw error;
 
 
-    const items = cart.map((item:any)=>({
-      order_id: order.id,
-      name:
-        item.signature ??
-        `${item.protein?.name} Bowl`,
-      quantity: item.quantity,
-      price: item.price,
-    }));
+const items = cart.map((item: any) => ({
+  order_id: order.id,
+
+  name:
+    item.signature ??
+    `${item.proteins?.map((p: any) => p.name).join(" / ")} Bowl`,
+
+  quantity: item.quantity,
+  price: item.price,
+
+  details: item,
+}));
 
 
     const { error: itemError } = await supabase

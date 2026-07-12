@@ -2,6 +2,7 @@ import Navbar from "@/components/layout/Navbar";
 import { supabase } from "@/lib/supabase";
 import PaymentConfirmButton from "@/components/payment/PaymentConfirmButton";
 import OrderPoller from "@/components/order/OrderPoller";
+import OrderTimeline from "@/components/orders/OrderTimeline";
 
 export default async function PaymentPage({
   params,
@@ -42,6 +43,12 @@ export default async function PaymentPage({
           <h1 className="text-4xl font-bold text-[#2E3416]">
             Complete Payment
           </h1>
+          <div className="mt-8">
+  <OrderTimeline
+    status={order.status}
+    paymentStatus={order.payment_status}
+  />
+</div>
 
           <p className="mt-3 text-stone-600">
             Order #{order.id.slice(0, 8)}

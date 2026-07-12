@@ -3,15 +3,12 @@ import AdminRealtime from "@/components/admin/AdminRealtime";
 import AdminPoller from "@/components/admin/AdminPoller";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import OrderTimeline from "@/components/orders/OrderTimeline";
 
 function statusStyle(status: string) {
   switch (status) {
-    case "pending":
-    case "pending_payment":
+    case "received":
       return "bg-yellow-100 text-yellow-800";
-
-    case "paid":
-      return "bg-green-100 text-green-800";
 
     case "preparing":
       return "bg-blue-100 text-blue-800";
@@ -20,13 +17,14 @@ function statusStyle(status: string) {
       return "bg-purple-100 text-purple-800";
 
     case "completed":
-      return "bg-stone-200 text-stone-700";
+      return "bg-green-100 text-green-800";
+    case "paid":
+      return "bg-green-100 text-green-800";
 
     default:
       return "bg-gray-100 text-gray-700";
   }
 }
-
 
 export default async function AdminOrdersPage() {
   const supabase = await createClient();
@@ -210,7 +208,17 @@ console.log("ADMIN ERROR:", error);
                 </div>
 
               )}
-
+<div className="mt-6">
+<OrderTimeline
+ status={
+   order.payment_status === "paid" &&
+   order.status === "received"
+     ? "paid"
+     : order.status
+ }
+ paymentStatus={order.payment_status}
+/>
+</div>
 
 
               <div className="mt-6 grid gap-3 sm:grid-cols-3">
@@ -218,30 +226,31 @@ console.log("ADMIN ERROR:", error);
 
 <div className="mt-6 grid gap-3 sm:grid-cols-2">
 
-  {order.payment_status === "unpaid" && (
-    <div className="rounded-full bg-yellow-100 py-3 text-center font-semibold text-yellow-700">
-      Waiting for Customer
-    </div>
-  )}
+{order.payment_status === "pending" && (
+  <div className="rounded-full bg-yellow-100 py-3 text-center font-semibold text-yellow-700">
+    Waiting for Customer Payment
+  </div>
+)}
 
-  {order.payment_status === "awaiting_confirmation" && (
-    <UpdateOrderButton
-      orderId={order.id}
-      text="Confirm Payment"
-      payment_status="paid"
-      color="bg-green-700 hover:bg-green-800"
-    />
-  )}
+
+{order.payment_status === "awaiting_confirmation" && (
+  <UpdateOrderButton
+    orderId={order.id}
+    text="Confirm Payment"
+    payment_status="paid"
+    color="bg-green-700 hover:bg-green-800"
+  />
+)}
 
   {order.payment_status === "paid" &&
-    order.status === "pending" && (
+    order.status === "received" && (
       <UpdateOrderButton
         orderId={order.id}
         text="Start Preparing"
         status="preparing"
         color="bg-[#2E3416] hover:bg-[#475226]"
       />
-    )}
+  )}
 
   {order.status === "preparing" && (
     <UpdateOrderButton
