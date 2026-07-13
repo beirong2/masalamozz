@@ -19,12 +19,13 @@ const [selectedSignature, setSelectedSignature] = useState<any>(null);
 
         <div className="mx-auto max-w-7xl px-6 py-8">
           
-<SignatureItems
+<BuildYourOwn
   activeBar={activeBar}
   setActiveBar={setActiveBar}
 />
 <div className="mx-auto max-w-7xl px-6 py-3"></div>
-<BuildYourOwn
+
+<SignatureItems
   activeBar={activeBar}
   setActiveBar={setActiveBar}
 />
