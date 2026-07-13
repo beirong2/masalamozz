@@ -81,7 +81,6 @@ useEffect(() => {
     );
   }
 function toggleOption(
-  setActiveBar("custom");
   option: MenuOption,
   selected: MenuOption[],
   setSelected: React.Dispatch<React.SetStateAction<MenuOption[]>>
