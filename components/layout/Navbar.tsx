@@ -14,6 +14,7 @@ export default function Navbar() {
 
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     async function loadUser() {
@@ -66,7 +67,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-[#E8DFD2] bg-[#F8F2E9]/95 backdrop-blur-lg">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+      <div className="mx-auto flex h-16 md:h-20 max-w-7xl items-center justify-between px-6">
 
         {/* Brand */}
         <Link href="/" className="flex items-center gap-3">
@@ -74,17 +75,18 @@ export default function Navbar() {
           <Image
             src="/images/logo.png"
             alt="Masala & Mozz"
-            width={52}
-            height={52}
+  width={42}
+  height={42}
+  className="md:h-[52px] md:w-[52px]"
             priority
           />
 
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-[#2E3416]">
+            <h1 className="text-lg font-bold md:text-xl">
               Masala & Mozz
             </h1>
 
-            <p className="text-xs uppercase tracking-[0.3em] text-[#C97A17]">
+            <p className="hidden text-xs uppercase tracking-[0.3em] text-[#C97A17] md:block">
               Indian • Italian Fusion
             </p>
           </div>
@@ -178,22 +180,87 @@ export default function Navbar() {
 
 
           {/* Main CTA */}
-          <Link
-            href={hasItems ? "/checkout" : "/menu"}
-            className="rounded-full bg-[#2E3416] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#475226]"
-          >
+<Link
+  href={hasItems ? "/checkout" : "/menu"}
+  className="hidden rounded-full bg-[#2E3416] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#475226] md:block"
+>
             {hasItems ? "Checkout" : "Order Now"}
           </Link>
 
 
           {/* Mobile */}
-          <button className="rounded-full p-2 md:hidden">
-            <Menu />
-          </button>
+<button
+  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+  className="rounded-full p-2 md:hidden"
+>
+  <Menu />
+</button>
 
         </div>
 
       </div>
+
+      {mobileMenuOpen && (
+        <div className="border-t border-stone-200 bg-[#F8F2E9] md:hidden">
+          <nav className="flex flex-col p-4">
+
+            <Link
+              href="/menu"
+              onClick={() => setMobileMenuOpen(false)}
+              className="rounded-lg px-4 py-3 hover:bg-stone-100"
+            >
+              Menu
+            </Link>
+
+            <Link
+              href="/about"
+              onClick={() => setMobileMenuOpen(false)}
+              className="rounded-lg px-4 py-3 hover:bg-stone-100"
+            >
+              About
+            </Link>
+
+            <Link
+              href="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="rounded-lg px-4 py-3 hover:bg-stone-100"
+            >
+              Contact
+            </Link>
+
+            {user ? (
+              <>
+                {isAdmin && (
+                  <Link
+                    href="/admin/orders"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="rounded-lg px-4 py-3 hover:bg-stone-100"
+                  >
+                    Admin
+                  </Link>
+                )}
+
+                <button
+                  onClick={logout}
+                  className="rounded-lg px-4 py-3 text-left hover:bg-stone-100"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-lg px-4 py-3 hover:bg-stone-100"
+              >
+                Login
+              </Link>
+            )}
+
+          </nav>
+        </div>
+      )}
+
     </header>
   );
 }

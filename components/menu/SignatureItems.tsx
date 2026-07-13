@@ -24,9 +24,17 @@ export default function SignatureItems() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <div
+  className="
+    flex gap-5 overflow-x-auto pb-2 snap-x snap-mandatory
+    md:grid md:overflow-visible md:snap-none
+    md:grid-cols-2 xl:grid-cols-3
+  "
+>
         {signatureItems.map((item) => (
-<SignatureCard
+<div className="min-w-[85%] snap-center md:min-w-0">
+  <SignatureCard
+  
   key={item.id}
   name={item.name}
   description={item.description}
@@ -48,6 +56,7 @@ export default function SignatureItems() {
     })
   }
 />
+</div>
         ))}
       </div>
       {selectedItem && (
