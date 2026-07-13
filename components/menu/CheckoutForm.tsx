@@ -429,8 +429,8 @@ function calculateDeliveryFee(miles: number) {
 >
   <div>
     <p className="font-medium">
-      {item.signature ??
-        `${item.protein?.name} Bowl`}
+{item.signature ??
+  `${item.proteins?.[0]?.name ?? "Custom"} Bowl`}
     </p>
 
     <p className="text-sm text-stone-500">
