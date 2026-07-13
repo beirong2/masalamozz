@@ -15,7 +15,15 @@ import {
   toppings,
 } from "@/data/menu";
 
-export default function BuildYourOwn() {
+export default function BuildYourOwn({
+  activeBar,
+  setActiveBar,
+}: {
+  activeBar: "signature" | "custom" | null;
+  setActiveBar: React.Dispatch<
+    React.SetStateAction<"signature" | "custom" | null>
+  >;
+}) {
   const [selectedBases, setSelectedBases] = useState<MenuOption[]>([]);
   const [selectedProteins, setSelectedProteins] = useState<MenuOption[]>([]);
 
@@ -43,6 +51,27 @@ useEffect(() => {
   }
 }, [selectedProteins]);
 
+useEffect(() => {
+  const hasSelection =
+    selectedBases.length > 0 ||
+    selectedProteins.length > 0 ||
+    sauce !== null ||
+    selectedToppings.length > 0;
+
+  if (hasSelection) {
+    setActiveBar("custom");
+  } else if (activeBar === "custom") {
+    setActiveBar(null);
+  }
+}, [
+  selectedBases,
+  selectedProteins,
+  sauce,
+  selectedToppings,
+  activeBar,
+  setActiveBar,
+]);
+
 
   function toggleTopping(name: string) {
     setSelectedToppings((prev) =>
@@ -52,6 +81,7 @@ useEffect(() => {
     );
   }
 function toggleOption(
+  setActiveBar("custom");
   option: MenuOption,
   selected: MenuOption[],
   setSelected: React.Dispatch<React.SetStateAction<MenuOption[]>>
@@ -149,6 +179,7 @@ setProteinMode("single");
 
 setSauce(null);
 setSelectedToppings([]);
+setActiveBar(null);
 }
 
 let total = 10 + (sauce?.price ?? 0);
@@ -301,17 +332,19 @@ return (
 
         </div>
 
-<BottomOrderBar
-  title={title}
-  subtitle={subtitle}
-  price={total}
-  disabled={
-    selectedBases.length === 0 ||
-    selectedProteins.length === 0 ||
-    !sauce
-  }
-  onAdd={handleAddToCart}
-/>
+{activeBar === "custom" && (
+  <BottomOrderBar
+    title={title}
+    subtitle={subtitle}
+    price={total}
+    disabled={
+      selectedBases.length === 0 ||
+      selectedProteins.length === 0 ||
+      !sauce
+    }
+    onAdd={handleAddToCart}
+  />
+)}
       </>
     )}
   </div>

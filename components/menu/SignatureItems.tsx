@@ -6,7 +6,15 @@ import { useCart } from "@/context/CartContext";
 import { useState } from "react";
 import BottomOrderBar from "./BottomOrderBar";
 
-export default function SignatureItems() {
+export default function SignatureItems({
+  activeBar,
+  setActiveBar,
+}: {
+  activeBar: "signature" | "custom" | null;
+  setActiveBar: React.Dispatch<
+    React.SetStateAction<"signature" | "custom" | null>
+  >;
+}) {
   const { addItem } = useCart();
   const [selectedItem, setSelectedItem] = useState<
   (typeof signatureItems)[0] | null
@@ -31,17 +39,26 @@ export default function SignatureItems() {
     md:grid-cols-2 xl:grid-cols-3
   "
 >
-        {signatureItems.map((item) => (
-<div className="min-w-[85%] snap-center md:min-w-0">
-  <SignatureCard
-  
-  key={item.id}
-  name={item.name}
-  description={item.description}
-  price={item.price}
-  image={item.image}
+{signatureItems.map((item) => (
+  <div
+    key={item.id}
+    className="min-w-[85%] snap-center md:min-w-0"
+  >
+    <SignatureCard
+      name={item.name}
+      description={item.description}
+      price={item.price}
+      image={item.image}
 
-  onSelect={() => setSelectedItem(item)}
+onSelect={() => {
+  if (selectedItem?.id === item.id) {
+    setSelectedItem(null);
+    setActiveBar(null);
+  } else {
+    setSelectedItem(item);
+    setActiveBar("signature");
+  }
+}}
 
   onAdd={() =>
     addItem({
@@ -59,7 +76,7 @@ export default function SignatureItems() {
 </div>
         ))}
       </div>
-      {selectedItem && (
+      {selectedItem && activeBar === "signature" && (
   <BottomOrderBar
     title={selectedItem.name}
     subtitle={selectedItem.description}
@@ -77,6 +94,7 @@ export default function SignatureItems() {
       });
 
       setSelectedItem(null);
+      setActiveBar(null);
     }}
   />
 )}
