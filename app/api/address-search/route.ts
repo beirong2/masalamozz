@@ -23,14 +23,17 @@ export async function GET(req: Request) {
     const data = await response.json();
 
     const results = data.features.map((item: any) => ({
-      place_id: item.properties.osm_id,
-      display_name: [
-        item.properties.name,
-        item.properties.city,
-        item.properties.state,
-      ]
-        .filter(Boolean)
-        .join(", "),
+      place_id: `${item.properties.osm_type}-${item.properties.osm_id}-${item.geometry.coordinates[0]}-${item.geometry.coordinates[1]}`,
+display_name: [
+  item.properties.housenumber,
+  item.properties.street,
+  item.properties.name,
+  item.properties.city,
+  item.properties.state,
+  item.properties.postcode,
+]
+  .filter(Boolean)
+  .join(", "),
       lat: item.geometry.coordinates[1],
       lon: item.geometry.coordinates[0],
     }));

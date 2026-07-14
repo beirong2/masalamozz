@@ -1,39 +1,48 @@
 "use client";
-import Navbar from "@/components/layout/Navbar";
+
 import BuildYourOwn from "@/components/menu/BuildYourOwn";
 import Cart from "@/components/menu/Cart";
-import MenuHero from "@/components/menu/MenuHero";
 import SignatureItems from "@/components/menu/SignatureItems";
 import { useState } from "react";
 
 export default function MenuPage() {
   const [activeBar, setActiveBar] = useState<
-  "signature" | "custom" | null
->(null);
+    "signature" | "custom" | null
+  >(null);
 
-const [selectedSignature, setSelectedSignature] = useState<any>(null);
   return (
-    <>
+    <main className="min-h-screen bg-[#F8F2E9]">
+      <div className="mx-auto max-w-7xl px-6 py-8">
 
-      <main className="bg-[#F8F2E9] min-h-screen">
+        <section>
+          <div className="mb-8 max-w-2xl">
+            <h2 className="text-3xl font-bold text-[#2E3416]">
+              Build Your Own
+            </h2>
 
-        <div className="mx-auto max-w-7xl px-6 py-8">
-          
-<BuildYourOwn
-  activeBar={activeBar}
-  setActiveBar={setActiveBar}
-/>
-<div className="mx-auto max-w-7xl px-6 py-3"></div>
+            <p className="mt-2 text-stone-500">
+              Create your own bowl or salad exactly how you want it.
+            </p>
+          </div>
 
-<SignatureItems
-  activeBar={activeBar}
-  setActiveBar={setActiveBar}
-/>
-        <div className="mx-auto max-w-7xl px-6 py-3"></div>
-          <Cart />
-        </div>
+          <BuildYourOwn
+            activeBar={activeBar}
+            setActiveBar={setActiveBar}
+          />
+        </section>
 
-      </main>
-    </>
+        <div className="py-6" />
+
+        <SignatureItems
+          activeBar={activeBar}
+          setActiveBar={setActiveBar}
+        />
+
+        <div className="py-6" />
+
+        <Cart />
+
+      </div>
+    </main>
   );
 }
