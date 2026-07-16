@@ -124,14 +124,12 @@ useEffect(() => {
             Contact
           </Link>
 
-{currentOrderId && (
-  <Link
-    href={`/order/${currentOrderId}`}
-    className="rounded-full bg-[#2E3416] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#475226]"
-  >
-    Track Order
-  </Link>
-)}
+<Link
+  href="/find-order"
+  className="transition hover:text-[#C97A17]"
+>
+  Find My Order
+</Link>
 
         </nav>
 

@@ -28,6 +28,7 @@ if (!parsed.success) {
     const {
       name,
       phone,
+      email,
       orderType,
       address,
       pickupTime,
@@ -48,6 +49,7 @@ const estimatedReady = new Date(
 .insert({
     name,
     phone,
+    email,
     order_type: orderType,
     address,
     notes,

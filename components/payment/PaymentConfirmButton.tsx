@@ -41,7 +41,7 @@ export default function PaymentConfirmButton({
     }
 
     // Immediately refresh after our own update
-    router.refresh();
+    router.push("/find-order");
   }
 
   return (

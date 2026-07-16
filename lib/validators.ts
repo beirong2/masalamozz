@@ -5,6 +5,8 @@ export const orderSchema = z.object({
 
   phone: z.string().min(7).max(20),
 
+  email: z.string().email(),
+
   orderType: z.enum(["pickup", "delivery"]),
 
   address: z.string().optional(),
@@ -21,50 +23,50 @@ export const orderSchema = z.object({
 
   paymentMethod: z.string(),
 
-cart: z.array(
-  z.object({
-    id: z.string().optional(),
+  cart: z.array(
+    z.object({
+      id: z.string().optional(),
 
-    quantity: z.number().int().positive(),
+      quantity: z.number().int().positive(),
 
-    price: z.number().positive(),
+      price: z.number().positive(),
 
-    signature: z.string().optional(),
+      signature: z.string().optional(),
 
-    bases: z
-      .array(
-        z.object({
+      bases: z
+        .array(
+          z.object({
+            id: z.string(),
+            name: z.string(),
+            price: z.number(),
+          })
+        )
+        .optional(),
+
+      proteins: z
+        .array(
+          z.object({
+            id: z.string(),
+            name: z.string(),
+            price: z.number(),
+          })
+        )
+        .optional(),
+
+      sauce: z
+        .object({
           id: z.string(),
           name: z.string(),
           price: z.number(),
         })
-      )
-      .optional(),
+        .nullable()
+        .optional(),
 
-    proteins: z
-      .array(
-        z.object({
-          id: z.string(),
-          name: z.string(),
-          price: z.number(),
-        })
-      )
-      .optional(),
+      toppings: z.array(z.string()).optional(),
 
-    sauce: z
-      .object({
-        id: z.string(),
-        name: z.string(),
-        price: z.number(),
-      })
-      .nullable()
-      .optional(),
+      baseMode: z.string().optional(),
 
-    toppings: z.array(z.string()).optional(),
-
-    baseMode: z.string().optional(),
-
-    proteinMode: z.string().optional(),
-  })
-),
+      proteinMode: z.string().optional(),
+    })
+  ),
 });

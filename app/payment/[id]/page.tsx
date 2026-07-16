@@ -183,14 +183,17 @@ export default async function PaymentPage({
               </p>
             </div>
           )}
-          <div className="mt-8">
-  <Link
-    href={`/order/${order.id}`}
-    className="block w-full rounded-2xl bg-[#2E3416] py-4 text-center font-semibold text-white transition hover:opacity-90"
-  >
-    View Order Tracking
-  </Link>
-</div>
+{order.payment_status !== "paid" && (
+  <div className="mt-8 rounded-2xl bg-stone-100 p-5 text-center">
+    <p className="font-semibold text-[#2E3416]">
+      Order tracking will unlock after payment is confirmed.
+    </p>
+
+    <p className="mt-1 text-sm text-stone-600">
+      This usually takes just a minute or two.
+    </p>
+  </div>
+)}
 
         </div>
       </main>

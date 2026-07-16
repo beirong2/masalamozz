@@ -20,14 +20,16 @@ export default function CheckoutForm() {
   console.log("CURRENT CART:", cart);
 
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+const [phone, setPhone] = useState("");
+const [email, setEmail] = useState("");
   const [pickupTime, setPickupTime] = useState("ASAP");
   const [notes, setNotes] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"venmo" | "zelle">("venmo");
 
-  const [errors, setErrors] = useState<{
+const [errors, setErrors] = useState<{
   name?: string;
   phone?: string;
+  email?: string;
   address?: string;
 }>({});
 
@@ -216,7 +218,30 @@ if (!response.ok) {
             )}
           </div>
 
+          <div>
+  <label className="mb-2 block font-medium">
+    Email
+  </label>
 
+  <input
+    value={email}
+    onChange={(e) => {
+      setEmail(e.target.value);
+      setErrors((prev) => ({ ...prev, email: undefined }));
+    }}
+    className={`w-full rounded-xl border p-3 ${
+      errors.email ? "border-red-500" : ""
+    }`}
+    placeholder="you@email.com"
+    type="email"
+  />
+
+  {errors.email && (
+    <p className="mt-2 text-sm text-red-600">
+      {errors.email}
+    </p>
+  )}
+</div>
 
           <div>
 
@@ -511,6 +536,10 @@ onClick={async () => {
     newErrors.phone = "Please enter a valid phone number.";
   }
 
+  if (!email.includes("@")) {
+  newErrors.email = "Please enter a valid email.";
+}
+
   if (orderType === "delivery" && !deliveryAvailable) {
     newErrors.address = "Please select a valid delivery address.";
   }
@@ -529,6 +558,7 @@ onClick={async () => {
     body: JSON.stringify({
       name,
       phone,
+      email,
       orderType,
       address,
       notes,
@@ -558,7 +588,15 @@ onClick={async () => {
     return;
   }
 
-  localStorage.setItem("currentOrderId", data.order.id);
+localStorage.setItem("currentOrderId", data.order.id);
+
+localStorage.setItem(
+  "customerLookup",
+  JSON.stringify({
+    phone,
+    email,
+  })
+);
 
   router.push(`/payment/${data.order.id}`);
 }}
