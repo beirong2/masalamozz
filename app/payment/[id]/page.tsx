@@ -54,10 +54,11 @@ export default async function PaymentPage({
   </p>
 
   <p className="mt-1 text-2xl font-bold text-[#2E3416]">
-    {new Date(order.estimated_ready_at).toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit",
-    })}
+{new Date(order.estimated_ready_at).toLocaleTimeString("en-US", {
+  timeZone: "America/New_York",
+  hour: "numeric",
+  minute: "2-digit",
+})}
   </p>
 </div>
 
