@@ -15,7 +15,9 @@ export default function AdminOrderCard({
 const [eta, setEta] = useState(
   order.estimated_ready_at
     ? new Date(order.estimated_ready_at)
-        .toISOString()
+        .toLocaleString("sv-SE", {
+          timeZone: "America/New_York",
+        })
         .slice(0,16)
     : ""
 );
