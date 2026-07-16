@@ -55,9 +55,15 @@ function addItem(item: CartItem) {
   setCart((prev) => {
     const existingIndex = prev.findIndex((cartItem) => {
       // Signature item comparison
-      if (cartItem.signature && item.signature) {
-        return cartItem.signature === item.signature;
-      }
+if (cartItem.signature && item.signature) {
+  return (
+    cartItem.signature === item.signature &&
+    JSON.stringify(cartItem.bases) === JSON.stringify(item.bases) &&
+    JSON.stringify(cartItem.proteins) === JSON.stringify(item.proteins) &&
+    JSON.stringify(cartItem.sauce) === JSON.stringify(item.sauce) &&
+    JSON.stringify(cartItem.toppings) === JSON.stringify(item.toppings)
+  );
+}
 
       // Build your own bowl comparison
       return (

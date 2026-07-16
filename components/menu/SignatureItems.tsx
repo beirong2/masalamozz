@@ -4,7 +4,7 @@ import SignatureCard from "./SignatureCard";
 import { signatureItems } from "@/data/menu";
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
-import BottomOrderBar from "./BottomOrderBar";
+import SignatureItemModal from "./SignatureItemModal";
 
 export default function SignatureItems({
   activeBar,
@@ -51,13 +51,8 @@ export default function SignatureItems({
       image={item.image}
 
 onSelect={() => {
-  if (selectedItem?.id === item.id) {
-    setSelectedItem(null);
-    setActiveBar(null);
-  } else {
-    setSelectedItem(item);
-    setActiveBar("signature");
-  }
+  setSelectedItem(item);
+  setActiveBar("signature");
 }}
 
   onAdd={() =>
@@ -76,28 +71,14 @@ onSelect={() => {
 </div>
         ))}
       </div>
-      {selectedItem && activeBar === "signature" && (
-  <BottomOrderBar
-    title={selectedItem.name}
-    subtitle={selectedItem.description}
-    price={selectedItem.price}
-    onAdd={() => {
-      addItem({
-        id: crypto.randomUUID(),
-        signature: selectedItem.name,
-        bases: [],
-        proteins: [],
-        sauce: null,
-        toppings: [],
-        quantity: 1,
-        price: selectedItem.price,
-      });
-
-      setSelectedItem(null);
-      setActiveBar(null);
-    }}
-  />
-)}
+<SignatureItemModal
+  item={selectedItem}
+  open={selectedItem !== null}
+  onClose={() => {
+    setSelectedItem(null);
+    setActiveBar(null);
+  }}
+/>
     </section>
   );
 }

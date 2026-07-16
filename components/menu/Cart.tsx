@@ -46,6 +46,32 @@ export default function Cart() {
   {item.signature ?? "Custom Bowl"}
 </h3>
 
+{item.signature && (
+  <div className="mt-2 space-y-1 text-sm">
+
+    {item.removed && item.removed.length > 0 && (
+      <p className="text-red-600">
+        <span className="font-medium">No:</span>{" "}
+        {item.removed.join(", ")}
+      </p>
+    )}
+
+    {item.extras && item.extras.length > 0 && (
+      <p className="text-green-700">
+        <span className="font-medium">Extra:</span>{" "}
+        {item.extras.map((e) => e.name).join(", ")}
+      </p>
+    )}
+
+    {!item.removed?.length && !item.extras?.length && (
+      <p className="text-stone-500 italic">
+        Standard recipe
+      </p>
+    )}
+
+  </div>
+)}
+
 {!item.signature && (
   <>
     <p className="text-sm text-stone-600">
