@@ -1,49 +1,58 @@
-import { createClient } from "@/lib/supabase/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const supabase = await createClient();
-
-const {
-  data: { user },
-} = await supabase.auth.getUser();
-
-if (!user) {
-  return NextResponse.json(
-    { error: "Unauthorized" },
-    { status: 401 }
-  );
-}
-
-const { data: admin } = await supabase
-  .from("admins")
-  .select("id")
-  .eq("id", user.id)
-  .single();
-
-if (!admin) {
-  return NextResponse.json(
-    { error: "Forbidden" },
-    { status: 403 }
-  );
-}
   try {
     const { orderId } = await req.json();
 
+    if (!orderId) {
+      return NextResponse.json(
+        {
+          error: "Missing order id",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
 
-    const result = await supabaseAdmin
+    const { data, error } = await supabaseAdmin
       .from("orders")
       .update({
         payment_status: "awaiting_confirmation",
       })
       .eq("id", orderId)
-      .select();
+      .select()
+      .single();
 
+    if (error) {
+      console.error("PAYMENT CONFIRM ERROR:", error);
 
-    return NextResponse.json(result);
-  } catch (e) {
-    console.error(e);
-    return NextResponse.json(e, { status: 500 });
+      return NextResponse.json(
+        {
+          error: "Could not update payment",
+        },
+        {
+          status: 500,
+        }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      order: data,
+    });
+
+  } catch (error) {
+    console.error("PAYMENT ROUTE ERROR:", error);
+
+    return NextResponse.json(
+      {
+        error: "Server error",
+      },
+      {
+        status: 500,
+      }
+    );
   }
 }
