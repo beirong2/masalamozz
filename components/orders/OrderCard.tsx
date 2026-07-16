@@ -23,13 +23,14 @@ Order
 
 
 <OrderTimeline
-status={
-order.payment_status === "paid" &&
-order.status === "received"
-? "paid"
-: order.status
-}
-paymentStatus={order.payment_status}
+  status={
+    order.payment_status === "paid" &&
+    order.status === "received"
+      ? "paid"
+      : order.status
+  }
+  paymentStatus={order.payment_status}
+  orderType={order.order_type}
 />
 
 

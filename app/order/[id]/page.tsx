@@ -49,15 +49,16 @@ export default async function OrderPage({
           Track Your Order
         </h1>
 
-        <OrderTimeline
-          status={
-            order.payment_status === "paid" &&
-            order.status === "received"
-              ? "paid"
-              : order.status
-          }
-          paymentStatus={order.payment_status}
-        />
+<OrderTimeline
+  status={
+    order.payment_status === "paid" &&
+    order.status === "received"
+      ? "paid"
+      : order.status
+  }
+  paymentStatus={order.payment_status}
+  orderType={order.order_type}
+/>
 
         <div className="mt-6 rounded-2xl bg-[#F8F2E9] p-5">
   <p className="text-sm text-stone-500">

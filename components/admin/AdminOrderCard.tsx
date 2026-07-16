@@ -20,7 +20,7 @@ const [eta, setEta] = useState(
         })
         .slice(0,16)
     : ""
-);
+)
 
 
 function statusStyle(status:string){
@@ -180,16 +180,14 @@ Notes
 <div className="mt-6">
 
 <OrderTimeline
-
-status={
-order.payment_status === "paid" &&
-order.status === "received"
-?"paid"
-:order.status
-}
-
-paymentStatus={order.payment_status}
-
+  status={
+    order.payment_status === "paid" &&
+    order.status === "received"
+      ? "paid"
+      : order.status
+  }
+  paymentStatus={order.payment_status}
+  orderType={order.order_type}
 />
 
 </div>
