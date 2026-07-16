@@ -292,7 +292,7 @@ if (!response.ok) {
     </h3>
 
     <p className="mt-2 text-lg font-bold">
-      About 20–30 minutes
+      About 20-30 minutes
     </p>
 
     <p className="mt-1 text-sm text-stone-500">
