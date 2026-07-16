@@ -240,6 +240,13 @@ useEffect(() => {
             >
               Contact
             </Link>
+            <Link
+  href="/find-order"
+  onClick={() => setMobileMenuOpen(false)}
+  className="rounded-lg px-4 py-3 hover:bg-stone-100"
+>
+  Find My Order
+</Link>
 
             {user ? (
               <>
@@ -273,6 +280,7 @@ useEffect(() => {
           </nav>
         </div>
       )}
+      
 
     </header>
   );
