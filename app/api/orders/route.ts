@@ -12,10 +12,12 @@ console.log("API RECEIVED:", body);
 const parsed = orderSchema.safeParse(body);
 
 if (!parsed.success) {
+  console.log(parsed.error.format());
+
   return NextResponse.json(
     {
       error: "Invalid order data",
-      details: parsed.error.flatten(),
+      details: parsed.error.format(),
     },
     {
       status: 400,
@@ -37,23 +39,30 @@ if (!parsed.success) {
       paymentMethod,
     } = parsed.data;
 
+const estimatedReady = new Date(
+  Date.now() + 25 * 60 * 1000
+).toISOString();
 
     const { data: order, error } = await supabase
     .from("orders")
-    .insert({
-        name,
-        phone,
-        order_type: orderType,
-        address,
-        pickup_time: pickupTime,
-        notes,
-        subtotal,
-        delivery_fee: deliveryFee,
-        total,
-        payment_method: paymentMethod,
-  status: "received",
-payment_status: "unpaid",
-    })
+.insert({
+    name,
+    phone,
+    order_type: orderType,
+    address,
+    notes,
+
+    subtotal,
+    delivery_fee: deliveryFee,
+    total,
+
+    payment_method: paymentMethod,
+
+    status: "received",
+    payment_status: "unpaid",
+
+    estimated_ready_at: estimatedReady,
+})
     .select("id")
     .single();
 

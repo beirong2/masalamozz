@@ -5,6 +5,7 @@ import { useCart } from "@/context/CartContext";
 import Link from "next/link";
 import { getDistanceMiles } from "@/lib/distance";
 import { RESTAURANT } from "@/lib/config";
+import { useRouter } from "next/navigation";
 
 type AddressSuggestion = {
   place_id: string;
@@ -14,6 +15,7 @@ type AddressSuggestion = {
 };
 
 export default function CheckoutForm() {
+  const router = useRouter();
   const { cart, removeItem } = useCart();
   console.log("CURRENT CART:", cart);
 
@@ -111,6 +113,12 @@ function calculateDeliveryFee(miles: number) {
 
 
             const data = await response.json();
+
+console.log(data);
+
+if (!response.ok) {
+  return;
+}
 
             setSuggestions(
             Array.isArray(data) ? data : []
@@ -252,32 +260,21 @@ function calculateDeliveryFee(miles: number) {
 
 
 
-          {orderType === "pickup" && (
+{orderType === "pickup" && (
+  <div className="rounded-2xl border border-stone-200 bg-stone-50 p-5">
+    <h3 className="font-semibold text-[#2E3416]">
+      Estimated Pickup Time
+    </h3>
 
-            <div>
+    <p className="mt-2 text-lg font-bold">
+      About 20–30 minutes
+    </p>
 
-              <label className="mb-2 block font-medium">
-                Pickup Time
-              </label>
-
-
-              <select
-                value={pickupTime}
-                onChange={(e)=>setPickupTime(e.target.value)}
-                className="w-full rounded-xl border p-3"
-              >
-
-                <option>ASAP</option>
-                <option>15 Minutes</option>
-                <option>30 Minutes</option>
-                <option>45 Minutes</option>
-                <option>1 Hour</option>
-
-              </select>
-
-            </div>
-
-          )}
+    <p className="mt-1 text-sm text-stone-500">
+      Your exact pickup time will update after your order is confirmed.
+    </p>
+  </div>
+)}
 
 
 
@@ -499,98 +496,72 @@ function calculateDeliveryFee(miles: number) {
         <button
         type="button"
 onClick={async () => {
+  if (cart.length === 0) {
+    alert("Cart is empty");
+    return;
+  }
 
-if (cart.length === 0) {
-  alert("Cart is empty");
-  return;
-}
+  const newErrors: typeof errors = {};
 
-const newErrors: typeof errors = {};
+  if (name.trim().length < 2) {
+    newErrors.name = "Please enter your name.";
+  }
 
-if (name.trim().length < 2) {
-  newErrors.name = "Please enter your name.";
-}
+  if (phone.trim().length < 7) {
+    newErrors.phone = "Please enter a valid phone number.";
+  }
 
-if (phone.trim().length < 7) {
-  newErrors.phone = "Please enter a valid phone number.";
-}
+  if (orderType === "delivery" && !deliveryAvailable) {
+    newErrors.address = "Please select a valid delivery address.";
+  }
 
-if (orderType === "delivery" && !deliveryAvailable) {
-  newErrors.address = "Please select a valid delivery address.";
-}
+  setErrors(newErrors);
 
-setErrors(newErrors);
+  if (Object.keys(newErrors).length > 0) {
+    return;
+  }
 
-if (Object.keys(newErrors).length > 0) {
-  return;
-}
+  const response = await fetch("/api/orders", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name,
+      phone,
+      orderType,
+      address,
+      notes,
+      subtotal,
+      deliveryFee,
+      total,
+      paymentMethod,
+      cart,
+    }),
+  });
 
-console.log("ORDER BODY:", {
-  name,
-  phone,
-  total,
-  cart,
-});
+  const data = await response.json();
 
-const response = await fetch("/api/orders", {
-              
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
+  console.log(data);
 
-                name,
-                phone,
+  if (!response.ok) {
+    if (data.details?.fieldErrors) {
+      setErrors({
+        name: data.details.fieldErrors.name?.[0],
+        phone: data.details.fieldErrors.phone?.[0],
+        address: data.details.fieldErrors.address?.[0],
+      });
+    } else {
+      alert(data.error ?? "Something went wrong.");
+    }
 
-                orderType,
-                address,
+    return;
+  }
 
-                pickupTime:
-                orderType === "pickup"
-                    ? pickupTime
-                    : null,
+  localStorage.setItem("currentOrderId", data.order.id);
 
-                notes,
-
-                subtotal,
-                deliveryFee,
-                total,
-
-                paymentMethod,
-
-                cart,
-
-            }),
-            });
-
-
-            const data = await response.json();
-
-
-            if(data.success){
-
-            window.location.href =
-            `/payment/${data.order.id}`;
-
-            }
-            else {
-
-            if (data.details?.fieldErrors) {
-              setErrors({
-                name: data.details.fieldErrors.name?.[0],
-                phone: data.details.fieldErrors.phone?.[0],
-                address: data.details.fieldErrors.address?.[0],
-              });
-            } else {
-              alert("Something went wrong. Please try again.");
-            }
-
-            console.error(data);
-
-            }
-
-        }}
+  router.push(`/payment/${data.order.id}`);
+}}
         className="mt-8 block w-full rounded-full bg-[#2E3416] py-4 text-center font-semibold text-white transition hover:bg-[#475226]"
         >
         Continue to Payment

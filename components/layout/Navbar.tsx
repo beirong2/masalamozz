@@ -6,8 +6,14 @@ import { Menu, ShoppingCart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import CurrentOrderLink from "./CurrentOrderLink";
 
 export default function Navbar() {
+  const [currentOrderId, setCurrentOrderId] = useState<string | null>(null);
+
+useEffect(() => {
+  setCurrentOrderId(localStorage.getItem("currentOrderId"));
+}, []);
   const { cart } = useCart();
 
   const supabase = createClient();
@@ -117,6 +123,15 @@ export default function Navbar() {
           >
             Contact
           </Link>
+
+{currentOrderId && (
+  <Link
+    href={`/order/${currentOrderId}`}
+    className="rounded-full bg-[#2E3416] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#475226]"
+  >
+    Track Order
+  </Link>
+)}
 
         </nav>
 

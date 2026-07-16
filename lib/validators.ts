@@ -21,7 +21,7 @@ export const orderSchema = z.object({
 
   paymentMethod: z.string(),
 
-  cart: z.array(
+cart: z.array(
   z.object({
     id: z.string().optional(),
 
@@ -31,18 +31,40 @@ export const orderSchema = z.object({
 
     signature: z.string().optional(),
 
-    protein: z
+    bases: z
+      .array(
+        z.object({
+          id: z.string(),
+          name: z.string(),
+          price: z.number(),
+        })
+      )
+      .optional(),
+
+    proteins: z
+      .array(
+        z.object({
+          id: z.string(),
+          name: z.string(),
+          price: z.number(),
+        })
+      )
+      .optional(),
+
+    sauce: z
       .object({
+        id: z.string(),
         name: z.string(),
+        price: z.number(),
       })
       .nullable()
       .optional(),
 
-    base: z.any().nullable().optional(),
+    toppings: z.array(z.string()).optional(),
 
-    sauce: z.any().nullable().optional(),
+    baseMode: z.string().optional(),
 
-    toppings: z.array(z.any()).optional(),
+    proteinMode: z.string().optional(),
   })
 ),
 });

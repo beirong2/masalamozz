@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import PaymentConfirmButton from "@/components/payment/PaymentConfirmButton";
 import OrderPoller from "@/components/order/OrderPoller";
 import OrderTimeline from "@/components/orders/OrderTimeline";
+import Link from "next/link";
 
 export default async function PaymentPage({
   params,
@@ -44,10 +45,20 @@ export default async function PaymentPage({
             Complete Payment
           </h1>
           <div className="mt-8">
-  <OrderTimeline
-    status={order.status}
-    paymentStatus={order.payment_status}
-  />
+
+</div>
+
+<div className="mt-6 rounded-2xl bg-[#F8F2E9] p-5">
+  <p className="text-sm text-stone-500">
+    Estimated Ready
+  </p>
+
+  <p className="mt-1 text-2xl font-bold text-[#2E3416]">
+    {new Date(order.estimated_ready_at).toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    })}
+  </p>
 </div>
 
           <p className="mt-3 text-stone-600">
@@ -172,6 +183,14 @@ export default async function PaymentPage({
               </p>
             </div>
           )}
+          <div className="mt-8">
+  <Link
+    href={`/order/${order.id}`}
+    className="block w-full rounded-2xl bg-[#2E3416] py-4 text-center font-semibold text-white transition hover:opacity-90"
+  >
+    View Order Tracking
+  </Link>
+</div>
 
         </div>
       </main>

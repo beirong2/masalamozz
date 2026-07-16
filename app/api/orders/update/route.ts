@@ -29,13 +29,14 @@ if (!admin) {
   );
 }
   try {
-    const {
-      orderId,
-      payment_status,
-      status,
-    } = await req.json();
+const {
+  orderId,
+  payment_status,
+  status,
+  estimated_ready_at,
+} = await req.json();
 
-    const updates: Record<string, string> = {};
+    const updates: Record<string, unknown> = {};
 
     if (payment_status) {
       updates.payment_status = payment_status;
@@ -44,6 +45,10 @@ if (!admin) {
     if (status) {
       updates.status = status;
     }
+
+    if (estimated_ready_at) {
+  updates.estimated_ready_at = estimated_ready_at;
+}
 
     const { data, error } = await supabaseAdmin
       .from("orders")
