@@ -25,7 +25,12 @@ const [searchInfo, setSearchInfo] = useState<{
 
 async function findOrders(){
 
-setError("");
+  if (!phone.trim() || !email.trim()) {
+    setError("Please enter both your phone number and email.");
+    return;
+  }
+
+  setError("");
 
 const res = await fetch("/api/find-order",{
 method:"POST",

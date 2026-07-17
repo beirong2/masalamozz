@@ -65,11 +65,9 @@ function statusStyle(status: string) {
     {
       key: "received",
       label: "Received",
-      count: orders.filter(
-        o =>
-          o.payment_status === "paid" &&
-          o.status === "received"
-      ).length,
+count: orders.filter(
+  (o) => o.status === "received"
+).length,
     },
     {
       key: "preparing",
