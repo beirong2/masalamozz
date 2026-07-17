@@ -4,6 +4,7 @@ import PaymentConfirmButton from "@/components/payment/PaymentConfirmButton";
 import OrderPoller from "@/components/order/OrderPoller";
 import OrderTimeline from "@/components/orders/OrderTimeline";
 import Link from "next/link";
+import VenmoButton from "@/components/payment/VenmoButton";
 
 export default async function PaymentPage({
   params,
@@ -78,19 +79,25 @@ export default async function PaymentPage({
 
           <div className="space-y-5">
 
-            <div className="rounded-2xl border p-5">
-              <h2 className="text-xl font-bold">
-                Venmo
-              </h2>
+<div className="rounded-2xl border p-5">
+  <h2 className="text-xl font-bold">
+    Venmo
+  </h2>
 
-              <p className="mt-2 text-lg">
-                @YOUR_VENMO_USERNAME
-              </p>
+  <p className="mt-2 text-lg">
+    @aaravthack28
+  </p>
 
-              <p className="mt-2 text-sm text-stone-500">
-                Send exactly ${Number(order.total).toFixed(2)}
-              </p>
-            </div>
+  <p className="mt-2 text-sm text-stone-500">
+    Send exactly ${Number(order.total).toFixed(2)}
+  </p>
+
+<VenmoButton
+  amount={Number(order.total)}
+  orderId={order.id}
+  username="aaravthack28"
+/>
+</div>
 
             <div className="rounded-2xl border p-5">
               <h2 className="text-xl font-bold">
@@ -98,7 +105,7 @@ export default async function PaymentPage({
               </h2>
 
               <p className="mt-2 text-lg">
-                YOUR_EMAIL_OR_PHONE
+                7814676394
               </p>
 
               <p className="mt-2 text-sm text-stone-500">
