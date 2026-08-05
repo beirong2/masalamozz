@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MasalaMozz 🍽️
 
-## Getting Started
+A full-stack restaurant ordering platform built with **Next.js**, **TypeScript**, and **Supabase**.
 
-First, run the development server:
+![MasalaMozz Screenshot](assets/food.png)
+
+## Overview
+
+MasalaMozz is a modern restaurant ordering application designed to provide a complete digital ordering experience. Customers can browse menu items, customize dishes, place orders, and track their purchases through a responsive web interface.
+
+The application includes customer-facing ordering features as well as restaurant management tools for handling orders and menu updates.
+
+## Features
+
+### Customer Experience
+
+* Browse restaurant menu items
+* Customize signature dishes
+* Add items to cart
+* Complete checkout flow
+* Payment processing workflow
+* Order confirmation and tracking
+* Address autocomplete
+
+### Restaurant Management
+
+* Admin order management
+* Menu management and updates
+* Customizable menu items
+* Streamlined order workflow
+
+## Tech Stack
+
+### Frontend
+
+* Next.js
+* React
+* TypeScript
+* Tailwind CSS
+
+### Backend
+
+* Supabase
+* Database integration
+* Backend application logic
+
+### Deployment
+
+* Vercel
+
+## Architecture
+
+```
+Next.js Frontend
+        |
+        |
+Supabase Backend
+        |
+        |
+Database + Application Services
+```
+
+## Running Locally
+
+Clone the repository:
+
+```bash
+git clone https://github.com/beirong2/masalamozz.git
+cd masalamozz
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open the application:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Highlights
 
-## Learn More
+* Built a complete restaurant ordering workflow from menu browsing to order completion
+* Implemented customizable menu items and dynamic ordering logic
+* Developed backend functionality using Supabase
+* Created an admin workflow for managing restaurant operations
+* Deployed a production-ready application using Vercel
 
-To learn more about Next.js, take a look at the following resources:
+## Future Improvements
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* Mobile-first optimization
+* Customer accounts and order history
+* Advanced analytics dashboard
+* Additional payment integrations
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Live Demo
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[MasalaMozz](https://masalamozz.vercel.app)
